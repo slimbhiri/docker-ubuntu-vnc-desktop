@@ -36,7 +36,7 @@ RUN add-apt-repository -y ppa:fcwu-tw/apps \
 
 RUN apt update \
     && apt install -y --no-install-recommends --allow-unauthenticated \
-        xubuntu-desktop \
+        xubuntu-desktop xfce4 \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
