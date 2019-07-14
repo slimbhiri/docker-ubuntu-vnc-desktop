@@ -1,3 +1,6 @@
 *.pyc
 tags
 cscope*
+
+# JetBrains IDE
+.idea/
