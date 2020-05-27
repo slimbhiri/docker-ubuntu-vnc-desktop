@@ -34,8 +34,7 @@ if [ "$USER" != "root" ]; then
     cp -r /root/{.gtkrc-2.0,.asoundrc} ${HOME}
     [ -d "/dev/snd" ] && chgrp -R adm /dev/snd
 fi
-sed -i "s|%USER%|$USER|" /etc/supervisor/conf.d/supervisord.conf
-sed -i "s|%HOME%|$HOME|" /etc/supervisor/conf.d/supervisord.conf
+sed -i -e "s|%USER%|$USER|" -e "s|%HOME%|$HOME|" /etc/supervisor/conf.d/supervisord.conf
 
 # home folder
 mkdir -p $HOME/.config/pcmanfm/LXDE/
@@ -59,9 +58,12 @@ if [ -n "$HTTP_PASSWORD" ]; then
 	sed -i 's|#_HTTP_PASSWORD_#||' /etc/nginx/sites-enabled/default
 fi
 
-# novnc websockify
-ln -s /usr/local/lib/web/frontend/static/websockify /usr/local/lib/web/frontend/static/novnc/utils/websockify
-chmod +x /usr/local/lib/web/frontend/static/websockify/run
+# dynamic prefix path renaming
+if [ -n "$RELATIVE_URL_ROOT" ]; then
+    echo "* enable RELATIVE_URL_ROOT: $RELATIVE_URL_ROOT"
+	sed -i 's|#_RELATIVE_URL_ROOT_||' /etc/nginx/sites-enabled/default
+	sed -i 's|_RELATIVE_URL_ROOT_|'$RELATIVE_URL_ROOT'|' /etc/nginx/sites-enabled/default
+fi
 
 # clearup
 PASSWORD=
